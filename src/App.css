@@ -1,0 +1,85 @@
+.show-favorites{
+    position: absolute;
+    top:16px;
+    right: 16px;
+    background-color: var(--neonGreen);
+    color: var(--grayishBlue);
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 700;
+}
+
+.app-container{
+    position: relative;
+    background-color: var(--darkGrayishBlue);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.advice-slip-container{
+    background-color: var(--grayishBlue);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0px 0px 0px 10px rgba ( 0,0,0,0.25);
+    max-width: 480px;
+    position: relative;
+}
+.advice-id{
+    color: var(--neonGreen);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+.advice-content{
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 24px;
+    color: var(--lightCyan);
+    text-align: center;
+}
+.separator-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.separator-container hr{
+    border-color: var(--lightCyan);
+    height: 0px;
+    width: 120px;
+    flex: 1;
+}
+.advice-button{
+    background-color: var(--neonGreen);
+    border: none;
+    border-radius: 100%;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(35px);
+    cursor: pointer;
+    transition-property: box-shadow;
+    transition-duration: 0.1;
+}
+.advice-button:hover{
+    box-shadow: 0px 0px 30px 4px rgba(82,255,168,1);
+}
+.toogle-favorite-button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 4px;
+    top: 8px;
+}

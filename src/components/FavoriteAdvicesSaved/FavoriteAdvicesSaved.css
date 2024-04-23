@@ -1,0 +1,38 @@
+.favorite-advice-title-and-delete-icon{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+button{
+    background: none;
+    border: none;
+}
+.delete-icon{
+    cursor: pointer;
+    transition-property: box-shadow;
+    transition-duration: 0.1;
+}
+.delete-icon:hover{
+    box-shadow: 0px 0px 15px 4px rgba(82,255,168,1);
+}
+.favorite-advice-content{
+    color: var(--lightCyan);
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+}
+.favorite-advice-title-and-delete-icon .favorite-advice-content:first-of-type{
+    letter-spacing: 2px;
+    color: var(--neonGreen);
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 14px;
+}
+.favorite-advice-content:last-of-type{
+    margin-bottom: 12px ;
+    font-size: 12px;
+    color: var(--darkBlue);
+}
+hr{
+    margin-bottom: 12px;
+}
