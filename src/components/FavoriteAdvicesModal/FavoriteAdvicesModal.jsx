@@ -11,7 +11,11 @@ const FavoriteAdvicesModal = props => {
             <h2> My Favorite Advices </h2>
             <AutoAwesomeIcon />
         </div>
-            <FavoriteAdvicesSaved advices={props.advices} deleteAdvice={props.deleteAdvice}/>
+        <div className="favorite-advices-container">
+        {props.advices.map((advice)=>(
+            <FavoriteAdvicesSaved key={advice.id} advice={advice} deleteAdvice={props.deleteAdvice}/>
+        ))}
+        </div>
       </div>
     </>
   );

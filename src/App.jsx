@@ -5,7 +5,8 @@ import CasinoIcon from '@mui/icons-material/Casino';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteAdvicesModal from './components/FavoriteAdvicesModal/FavoriteAdvicesModal';
-import { useEffect, useState } from 'react';
+import {getCurrentDateFormated} from './utils/getCurrentDateFormated.js';
+import { useState } from 'react';
 
 const App = () => {
   const [advice, setAdvice] = useState({
@@ -15,9 +16,9 @@ const App = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [favoriteAdvices, setFavoriteAdvices] = useState([]);
+  const favoriteAdvicesFromLocalStorage = JSON.parse(localStorage.getItem('favoriteAdvices'));
+  const [favoriteAdvices, setFavoriteAdvices] = useState(favoriteAdvicesFromLocalStorage === null ? [] : favoriteAdvicesFromLocalStorage);
 
-  const [favoriteIcon, setFavoriteIcon] = useState(false);
  
   const handleGenerateAdvice = async () => {
     setIsLoading(true);
@@ -33,8 +34,7 @@ const App = () => {
     };
 
     setAdvice(newAdvice);
-    setFavoriteIcon(false);
-  
+ 
   };
 
   const getAdviceIndex = () => {
@@ -45,10 +45,6 @@ const App = () => {
     return adviceIndex;
   };
 
-  // const getInitialState = () =>{
-  //   const newFavoriteAdvices = localStorage.getItem('favoriteAdvice')
-  //   return newFavoriteAdvices ? JSON.parse(newFavoriteAdvices) : favoriteAdvices
-  // }
 
   const handleAddAdviceToFavorites = () => {
     const adviceIndex = getAdviceIndex();
@@ -59,10 +55,9 @@ const App = () => {
 
       newFavoriteAdvices.splice(adviceIndex, 1);
 
-      console.log(newFavoriteAdvices);
-
       setFavoriteAdvices(newFavoriteAdvices);
-      setFavoriteIcon(false)
+      localStorage.setItem('favoriteAdvices', JSON.stringify(newFavoriteAdvices));
+
     } else {
       // adauga advice
       const newFavoriteAdvices = [
@@ -70,47 +65,14 @@ const App = () => {
         {
           id: advice.id,
           content: advice.content,
-          date: getDate()
+          date: getCurrentDateFormated(),
         },
       ];
      
       setFavoriteAdvices(newFavoriteAdvices);
-      setFavoriteIcon(true)
-
-      // useEffect(() =>{
-      //   const newFavoriteAdvices = [
-      //     ...favoriteAdvices,
-      //     {
-      //       id: advice.id,
-      //       content: advice.content,
-      //       date: getDate()
-      //     },
-      //   ];
-      // localStorage.setItem('favoriteAdvice', JSON.stringify(newFavoriteAdvices))
-
-      // },[newFavoriteAdvices])
-
-      
+      localStorage.setItem('favoriteAdvices', JSON.stringify(newFavoriteAdvices));
     }
-  
   };
-
-  // useEffect(() => {
-  //   localStorage.setItem('favoriteAdvices', JSON.stringify(newFavoriteAdvices));
-  // }, [favoriteAdvices]);
-  //   const storedFavoriteAdvice = localStorage.getItem('favoriteAdvices');
-  //   if(   storedFavoriteAdvice){
-  //     setFavoriteAdvices(newFavoriteAdvices)
-  //   }
-  
-  const getDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    return `${date}/${month}/${year}`;
-  }
-
 
   const handleModalOpening = () => {
     setIsOpen(true);
@@ -120,26 +82,25 @@ const App = () => {
     setIsOpen(false);
   };
   
-  const deleteFavoriteAdvice = () =>{
-    const adviceIndex = getAdviceIndex();
+  const removeAdviceFromFavorites =(adviceId) =>{
 
-    if (adviceIndex >= 0) {
-      
-      const deleteAdvices = [...favoriteAdvices];
+    const adviceIndexInsideFavorites = favoriteAdvices.findIndex(favoriteAdvice => favoriteAdvice.id === adviceId);
 
-      for(let i = 0; i < deleteAdvices.length; i++){
-      deleteAdvices.splice(adviceIndex[i], 1);
-    }
-    
-      setFavoriteAdvices(deleteAdvices);
+    const newFavoriteAdvices = [...favoriteAdvices];
+
+    newFavoriteAdvices.splice(adviceIndexInsideFavorites, 1);
+
+    setFavoriteAdvices(newFavoriteAdvices);
+    localStorage.setItem('favoriteAdvices', JSON.stringify(newFavoriteAdvices));
+
   }
-  }
+
   return (
     <section className='app-container'>
       <button onClick={handleModalOpening} className='show-favorites'>Show Favorites</button>
-      {isOpen === true ? ( <FavoriteAdvicesModal advices={favoriteAdvices} setIsOpen={closeModal} deleteAdvice={deleteFavoriteAdvice}/> ) : null}
+      {isOpen === true ? ( <FavoriteAdvicesModal advices={favoriteAdvices} setIsOpen={closeModal} deleteAdvice={removeAdviceFromFavorites}/> ) : null}
       <div className='advice-slip-container'>
-        <button onClick={handleAddAdviceToFavorites} className='toogle-favorite-button' > {favoriteIcon === true  ? <FavoriteIcon style={{color:'#52ffa8'}}/> : <FavoriteBorderIcon style={{color:'#52ffa8'}}/>} </button>
+        <button onClick={handleAddAdviceToFavorites} className='toogle-favorite-button' > {getAdviceIndex() === -1  ? (< FavoriteBorderIcon style={{color:'#52ffa8'}}/>) : (< FavoriteIcon style={{color:'#52ffa8'}}/>)} </button>
         <p className='advice-id'>ADVICE #{advice.id}</p>
         <p className='advice-content'>"{advice.content}"</p>
         <div className='separator-container'>
